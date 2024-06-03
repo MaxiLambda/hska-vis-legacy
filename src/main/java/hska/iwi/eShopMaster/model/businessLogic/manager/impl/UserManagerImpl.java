@@ -53,7 +53,7 @@ public class UserManagerImpl implements UserManager {
 
     public Role getRoleByLevel(int level) {
         try {
-            return httpDao.get("/role/" + level, User.class).getRole();
+            return httpDao.get("/role/" + level, Role.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
