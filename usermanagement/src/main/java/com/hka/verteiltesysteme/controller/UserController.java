@@ -11,22 +11,31 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
+    @GetMapping("/roles/all")
+    public List<Role> getAllRoles() {
+        if (!roleRepo.existsById(2)) roleRepo.save(new Role(2, "admin", 0));
+        if (!roleRepo.existsById(1)) roleRepo.save(new Role(1, "user", 1));
+
+        return roleRepo.findAll();
+    }
+
     @PostMapping("user/register")
     public ResponseEntity<String> registerUser(@RequestBody @Validated UserDto user) {
+        if (!roleRepo.existsById(2)) roleRepo.save(new Role(2, "admin", 0));
+        if (!roleRepo.existsById(1)) roleRepo.save(new Role(1, "user", 1));
 
         Role role = roleRepo.findByLevel(1);
-
-        userRepo.save(User.builder()
+        var newUser = userRepo.save(User.builder()
                 .role(role)
                 .firstname(user.firstname())
                 .lastname(user.lastname())
@@ -34,20 +43,48 @@ public class UserController {
                 .username(user.username())
                 .build());
 
-        return ResponseEntity.created(URI.create("/hallo")).build();
+        return ResponseEntity.created(URI.create("/user/" + newUser.getId())).build();
     }
 
-    @GetMapping("/user/find/{id}")
-    public ResponseEntity<User> findUser(@PathVariable int id){
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> findUser(@PathVariable int id) {
         Optional<User> user = userRepo.findById(id);
 
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id){
-       userRepo.deleteById(id);
+    @PostMapping("/user/findByUsername")
+    public ResponseEntity<User> findByUsername(@RequestBody FindUsername request) {
+        if (userRepo.findByUsername("admin").isEmpty()) {
+            var role = roleRepo.findByLevel(0);
+            userRepo.save(new User(9999, "admin", "admin", "admin", "admin", role));
+            System.out.println("created admin");
+        } else {
+            System.out.println("admin already exists");
+        }
 
-       return ResponseEntity.ok(null);
+        Optional<User> user = userRepo.findByUsername(request.username());
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+    @GetMapping("/role/{level}")
+    public ResponseEntity<Role> getRoleByLevel(@PathVariable int level) {
+        if (!roleRepo.existsById(2)) roleRepo.save(new Role(2, "admin", 0));
+        if (!roleRepo.existsById(1)) roleRepo.save(new Role(1, "user", 1));
+
+        Role role = roleRepo.findByLevel(level);
+        return ResponseEntity.ok(role);
+    }
+
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+        userRepo.deleteById(id);
+
+        return ResponseEntity.ok(null);
+    }
+
+    public record FindUsername(String username) {
     }
 }

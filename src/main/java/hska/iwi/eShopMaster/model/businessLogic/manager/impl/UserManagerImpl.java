@@ -1,70 +1,87 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
+import com.google.gson.Gson;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.RoleDAO;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.UserDAO;
 import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
 
 /**
- * 
  * @author knad0001
  */
 
+@RequiredArgsConstructor
 public class UserManagerImpl implements UserManager {
-	UserDAO helper;
-	
-	public UserManagerImpl() {
-		helper = new UserDAO();
-	}
+    private final HttpDao httpDao = new HttpDao("http://user.default.svc.cluster.local:8084");
+//    private final HttpDao httpDao = new HttpDao("http://reverse-proxy:5000/user");
 
-	
-	public void registerUser(String username, String name, String lastname, String password, Role role) {
+    public void registerUser(String username, String name, String lastname, String password, Role role) {
+        User user = new User(username, name, lastname, password, role);
 
-		User user = new User(username, name, lastname, password, role);
+        try {
+            httpDao.post("/user/register", new Gson().toJson(user), Object.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-		helper.saveObject(user);
-	}
 
-	
-	public User getUserByUsername(String username) {
-		if (username == null || username.equals("")) {
-			return null;
-		}
-		return helper.getUserByUsername(username);
-	}
+    public User getUserByUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            return null;
+        }
 
-	public boolean deleteUserById(int id) {
-		User user = new User();
-		user.setId(id);
-		helper.deleteObject(user);
-		return true;
-	}
+        try {
+            return httpDao.post("/user/findByUsername", new Gson().toJson(new Username(username)), User.class);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public Role getRoleByLevel(int level) {
-		RoleDAO roleHelper = new RoleDAO();
-		return roleHelper.getRoleByLevel(level);
-	}
+    public boolean deleteUserById(int id) {
+        try {
+            httpDao.delete("/user/" + id, Object.class);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public boolean doesUserAlreadyExist(String username) {
-		
-    	User dbUser = this.getUserByUsername(username);
-    	
-    	if (dbUser != null){
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-	}
-	
+    public Role getRoleByLevel(int level) {
+        try {
+            return httpDao.get("/role/" + level, User.class).getRole();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public boolean validate(User user) {
-		if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
-			return false;
-		}
-		
-		return true;
-	}
+    public boolean doesUserAlreadyExist(String username) {
+
+        User dbUser = this.getUserByUsername(username);
+
+        if (dbUser != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Data
+    public class Username {
+        private final String username;
+    }
+
+
+    public boolean validate(User user) {
+        if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

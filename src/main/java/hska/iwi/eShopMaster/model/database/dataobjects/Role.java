@@ -1,62 +1,60 @@
 package hska.iwi.eShopMaster.model.database.dataobjects;
 
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * This class contains details about roles.
  */
-@Entity
-@Table(name = "role")
+@Getter
+@Setter
+@AllArgsConstructor
 public class Role implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private int id;
+    private int id;
 
-	@Column(name = "type")
-	private String typ;
-	
-	
-	@Column(name = "level1")
-	private int level;
+    private String typ;
 
-	public Role() {
-	}
 
-	public Role(String typ, int level) {
-		this.typ = typ;
-		this.level = level;
-	}
+    private int level;
 
-	public int getId() {
-		return this.id;
-	}
+    public Role() {
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Role(String typ, int level) {
+        this.typ = typ;
+        this.level = level;
+    }
 
-	public String getTyp() {
-		return this.typ;
-	}
+    public int getId() {
+        return this.id;
+    }
 
-	public void setTyp(String typ) {
-		this.typ = typ;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public int getLevel() {
-		return this.level;
-	}
+    public String getTyp() {
+        return this.typ;
+    }
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+    public void setTyp(String typ) {
+        this.typ = typ;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
 }

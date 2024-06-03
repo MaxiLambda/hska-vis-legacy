@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: webshop
+  name: webshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webshop
+  strategy: { }
+  template:
+    metadata:
+      name:
+        webshop
+      creationTimestamp: null
+      labels:
+        app: webshop
+    spec:
+      containers:
+        - image: maxilambda/webshop:latest
+          name: webshop
+          ports:
+            - containerPort: 8080
+          resources: { }
+      restartPolicy: Always
+status: { }
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: webshop
+  name: webshop
+spec:
+  ports:
+    - name: "8080"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: webshop
+status:
+  loadBalancer: { }
