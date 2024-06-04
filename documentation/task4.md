@@ -162,3 +162,5 @@ Anhand von Logging und Monitoring der Microservices wurden deren durchschnittlic
   - Ein Kiali-Graph zeigt die Kommunikation zwischen den verschiedenen Microservices.
 - ![vs screenshot kiali 3 verschiedene Pods für Categorie](https://hackmd.io/_uploads/rJ4kuso40.png)
   - Die Verteilung der Kategorien-Microservices auf verschiedene Pods wurde visualisiert.
+- ![grafik](https://hackmd.io/_uploads/Sy1lwB2NA.png)
+    - Hier werden zusätzlich noch die Antwortzeiten des User-services aufgezeigt. 
