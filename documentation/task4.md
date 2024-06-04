@@ -146,6 +146,8 @@ Anhand von Logging und Monitoring der Microservices wurden deren durchschnittlic
   - Die durchschnittlichen Antwortzeiten für die Nutzererstellung wurden gemessen und analysiert.
 - ![vs screenshot Product, response times](https://hackmd.io/_uploads/H1qhPjj4C.png)
   - Die Antwortzeiten für Produktabfragen wurden gemessen und analysiert.
+- ![grafik](https://hackmd.io/_uploads/rJUwNN2NA.png)
+    - Zusätzlich haben wir durch eine Postman Collection die gesamte API kontinuierlich unter Last getestet.
 - ![vs screenshot loadbalancing shown in prometheus](https://hackmd.io/_uploads/r1Hpvss4C.png)
   - Die Lastverteilung zwischen den Microservice-Instanzen wurde mithilfe von Prometheus visualisiert und überprüft.
 - ![vs screenshot kiali graph welche nodes senden an welche nodes](https://hackmd.io/_uploads/rkr0woiNA.png)
