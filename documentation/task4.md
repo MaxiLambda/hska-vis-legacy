@@ -81,9 +81,15 @@ Das UML-Diagramm für das Produktmanagement zeigt logisch getrennte Klassen und 
 
 4. **Grafana Graphs:**
 ![grafana screen](https://hackmd.io/_uploads/B1JhUYzNR.png)
+4.1. **Grafana Dashboard**
+![grafik](https://hackmd.io/_uploads/HyOgkSn40.png)
+![grafik](https://hackmd.io/_uploads/B1Z-JHhN0.png)
+
 
 5. **Prometheus Graph:**
    ![prometheus graph](https://hackmd.io/_uploads/S1_5IYM4R.png)
+   
+
 
 <div style="page-break-after: always;"></div>
 
@@ -133,6 +139,8 @@ Die korrekte Funktionsweise des eShop wurde anhand seiner Use Cases demonstriert
   - Die Produktsuche mit sowohl minimalem als auch maximalem Preisfilter liefert die erwarteten Ergebnisse.
 - ![vs screenshot Search Products (loads categories to resolve the id, products to show products, users - to check permissions)](https://hackmd.io/_uploads/Sk05qss4A.png)
   - Die Produktsuche lädt Kategorien zur Auflösung der IDs, Produkte zur Anzeige der Produkte und Benutzer zur Überprüfung der Berechtigungen.
+- ![grafik](https://hackmd.io/_uploads/HJXYA42E0.png)
+    - Die Produktdetailansicht funktioniert wie angefordert.
 
 ### Performanz und Skalierbarkeit
 Anhand von Logging und Monitoring der Microservices wurden deren durchschnittliche Antwortzeiten für verschiedene Arten von Aufrufen ermittelt. Die korrekte Funktion des Load Balancing wurde anhand der Verteilung von Aufrufen auf Microservice-Instanzen gezeigt. Diese Tests wurden mit Werkzeugen wie Prometheus und Grafana durchgeführt, um detaillierte Metriken und Visualisierungen zu erhalten.
