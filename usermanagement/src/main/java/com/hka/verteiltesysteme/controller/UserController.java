@@ -39,7 +39,7 @@ public class UserController {
                 .role(role)
                 .firstname(user.firstname())
                 .lastname(user.lastname())
-                .password(user.password1())
+                .password(user.password())
                 .username(user.username())
                 .build());
 
